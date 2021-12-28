@@ -18,7 +18,7 @@ final as (
 
     from payments
 
-    left join orders using (order_id)
+    left join orders on payments.order_id = orders.order_id
 
     group by 1
 
