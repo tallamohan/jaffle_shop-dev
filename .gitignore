@@ -1,4 +1,5 @@
-
+.python-version
+env/
 target/
 dbt_modules/
 logs/
