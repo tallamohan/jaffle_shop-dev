@@ -29,3 +29,46 @@ models:
         tests:
           - accepted_values:
               values: ['credit_card', 'coupon', 'bank_transfer', 'gift_card']
+
+  - name: stg_locations
+    columns:
+      - name: id
+      - name: name
+      - name: tax_rate
+      - name: opened_date
+
+unit_tests:
+  - name: test_does_location_opened_at_trunc_to_date
+    description: "Check that opened_at timestamp is properly truncated to a date value."
+    model: stg_locations
+    given:
+      - input: ref('raw_locations')
+        rows:
+          - {
+            id: 1,
+            name: "Philadelphia",
+            tax_rate: 0.2,
+            opened_at: "2016-09-01T00:00:00",
+            }
+          - {
+            id: 2,
+            name: "New York",
+            tax_rate: 0.1,
+            opened_at: "2079-10-27T23:59:59",
+            }
+    expect:
+      rows:
+        - {
+          location_id: 1,
+          location_name: "Philadelphia",
+          tax_rate: 0.2,
+          opened_date: 2016-09-01
+          #opened_date: "DATE '2016-09-01'"
+          }
+        - {
+          location_id: 2,
+          location_name: "New York",
+          tax_rate: 0.1,
+          opened_date: 2079-10-27
+          #opened_date: "DATE '2079-10-27'"
+          }

@@ -15,6 +15,12 @@ clean-targets:
     - "dbt_modules"
     - "logs"
 
+seeds:
+  jaffle_shop: # you must include the project name
+    raw_locations:
+      +column_types:
+        opened_at: varchar(20)
+
 models:
   jaffle_shop:
       materialized: table
